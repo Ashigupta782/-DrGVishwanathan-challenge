@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int characterReplacement(std::string s, int k) {
+        std::vector<int> count(26, 0);
+        int left = 0;
+        int max_freq = 0;
+        int max_len = 0;
+        
+        for (int right = 0; right < s.length(); ++right) {
+            // Update frequency of the current character
+            int char_index = s[right] - 'A';
+            count[char_index]++;
+            
+            // Track the maximum frequency in the current window
+            max_freq = std::max(max_freq, count[char_index]);
+            
+            // If replacements needed exceed k, shrink the window from the left
+            if ((right - left + 1) - max_freq > k) {
+                count[s[left] - 'A']--;
+                left++;
+            }
+            
+            // Update the maximum length of a valid window
+            max_len = std::max(max_len, right - left + 1);
+        }
+        
+        return max_len;
+    }
+};
