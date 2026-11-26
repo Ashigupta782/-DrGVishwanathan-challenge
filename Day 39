@@ -1,0 +1,54 @@
+class Solution {
+public:
+    ListNode* reverseEvenLengthGroups(ListNode* head) {
+
+        ListNode* prevGroup = head;
+        int groupSize = 2;
+
+        while (prevGroup->next != NULL) {
+
+            ListNode* curr = prevGroup->next;
+            int count = 0;
+
+            // Find actual group size
+            while (count < groupSize && curr != NULL) {
+                curr = curr->next;
+                count++;
+            }
+
+            // Reverse only even-sized groups
+            if (count % 2 == 0) {
+
+                ListNode* groupStart = prevGroup->next;
+                ListNode* nextGroup = curr;
+
+                ListNode* prev = nextGroup;
+                ListNode* node = groupStart;
+
+                while (node != nextGroup) {
+
+                    ListNode* nextNode = node->next;
+
+                    node->next = prev;
+                    prev = node;
+                    node = nextNode;
+                }
+
+                prevGroup->next = prev;
+                prevGroup = groupStart;
+
+            } else {
+
+                // Skip odd-sized groups
+                while (count > 0) {
+                    prevGroup = prevGroup->next;
+                    count--;
+                }
+            }
+
+            groupSize++;
+        }
+
+        return head;
+    }
+};
